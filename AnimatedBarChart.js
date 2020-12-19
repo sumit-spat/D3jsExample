@@ -1,13 +1,11 @@
 import React, { useRef, useEffect, useState } from "react";
 import "./App.css";
 import { select, axisBottom, axisRight, scaleLinear, scaleBand } from "d3";
-import "./App.css";
 
 function AnimatedBarChart() {
   const [data, setData] = useState([25, 30, 45, 60, 10, 65, 75]);
   const svgRef = useRef();
 
-  // will be called initially and on every data change
   useEffect(() => {
     const svg = select(svgRef.current);
 
@@ -24,15 +22,15 @@ function AnimatedBarChart() {
       .range(["green", "orange", "red"])
       .clamp(true);
 
-    // create x-axis
+    //  x-axis
     const xAxis = axisBottom(xScale).ticks(data.length);
     svg.select(".x-axis").style("transform", "translateY(150px)").call(xAxis);
 
-    // create y-axis
+    //  y-axis
     const yAxis = axisRight(yScale);
     svg.select(".y-axis").style("transform", "translateX(300px)").call(yAxis);
 
-    // draw the bars
+    //  bars
     svg
       .selectAll(".bar")
       .data(data)
@@ -43,8 +41,6 @@ function AnimatedBarChart() {
       .attr("y", -150)
       .attr("width", xScale.bandwidth())
       .on("mouseenter", function (event, value) {
-        // events have changed in d3 v6:
-        // https://observablehq.com/@d3/d3v6-migration-guide#events
         const index = svg.selectAll(".bar").nodes().indexOf(this);
         svg
           .selectAll(".tooltip")
@@ -72,18 +68,7 @@ function AnimatedBarChart() {
           <g className="x-axis" />
           <g className="y-axis" />
         </svg>
-      </div>
-      {/* <button onClick={() => setData(data.map((value) => value + 5))}>
-        Update data
-      </button>
-      <button onClick={() => setData(data.filter((value) => value < 35))}>
-        Filter data
-      </button>*/}
-      <button
-        onClick={() => setData([...data, Math.round(Math.random() * 100)])}
-      >
-        Add data
-      </button>
+      </div
     </>
   );
 }
